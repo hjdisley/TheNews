@@ -1,16 +1,23 @@
 import React from 'react';
 import { View, Text } from 'react-native';
-import { Tile } from 'react-native-elements';
+import { Tile, Button } from 'react-native-elements';
 import moment from 'moment';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const ArticleCard = ({ item }) => {
   return (
-    <View>
+    <View
+      style={{
+        borderTopWidth: 10,
+        borderBottomWidth: 10,
+        borderColor: 'lightgray',
+      }}
+    >
       <Tile
         imageContainerStyle={{ height: 75 }}
         imageSrc={{ uri: item.urlToImage }}
         title={item.title}
-        titleStyle={{ fontSize: 14, paddingTop: 1 }}
+        titleStyle={{ fontSize: 12, fontWeight: 'bold', paddingTop: 1 }}
         contentContainerStyle={{ height: 70, marginTop: 10 }}
       >
         <View
@@ -20,8 +27,10 @@ const ArticleCard = ({ item }) => {
             justifyContent: 'space-between',
           }}
         >
-          <Text>{moment(item.publishedAt).fromNow()}</Text>
-          <Text style={{ paddingBottom: 1 }}>{item.source.name}</Text>
+          <Text style={{ fontSize: 12 }}>
+            {moment(item.publishedAt).fromNow()}
+          </Text>
+          <Text style={{ fontSize: 10 }}>Source: {item.source.name}</Text>
         </View>
       </Tile>
     </View>

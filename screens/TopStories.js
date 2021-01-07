@@ -2,15 +2,16 @@ import React, { useState, useEffect } from 'react';
 import {
   FlatList,
   StyleSheet,
-  Text,
+  RefreshControl,
   View,
   ActivityIndicator,
 } from 'react-native';
 import ArticleCard from '../components/ArticleCard';
 
-const TopStories = ({ navigation }) => {
+const TopStories = () => {
   const [articles, setArticles] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
 
   const getNews = async () => {
     try {
@@ -20,9 +21,15 @@ const TopStories = ({ navigation }) => {
       const jsonData = await response.json();
       setArticles(jsonData.articles);
       setLoading(false);
+      setRefreshing(false);
     } catch (err) {
-      // console.log(err);
+      console.error(err);
     }
+  };
+
+  const handleRefresh = () => {
+    getNews();
+    setRefreshing(true);
   };
 
   useEffect(() => {
@@ -35,9 +42,12 @@ const TopStories = ({ navigation }) => {
     );
 
   return (
-    <View style={styles.container}>
-      <View style={styles.row}></View>
+    <View>
+      <View style={{ flexDirection: 'row' }}></View>
       <FlatList
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
+        }
         data={articles}
         renderItem={ArticleCard}
         keyExtractor={(item) => item.title}
@@ -45,36 +55,5 @@ const TopStories = ({ navigation }) => {
     </View>
   );
 };
-const styles = StyleSheet.create({
-  containerFlex: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  container: {
-    flex: 1,
-    marginTop: 10,
-    alignItems: 'center',
-    backgroundColor: '#fff',
-    justifyContent: 'center',
-  },
-  header: {
-    height: 30,
-    width: '100%',
-    backgroundColor: 'pink',
-  },
-  row: {
-    flexDirection: 'row',
-  },
-  label: {
-    fontSize: 16,
-    color: 'black',
-    marginRight: 10,
-    fontWeight: 'bold',
-  },
-  info: {
-    fontSize: 16,
-    color: 'grey',
-  },
-});
+
 export default TopStories;
