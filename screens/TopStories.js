@@ -1,54 +1,80 @@
 import React, { useState, useEffect } from 'react';
-import { ScrollView, Text, View } from 'react-native';
-import { Tile } from 'react-native-elements';
+import {
+  FlatList,
+  StyleSheet,
+  Text,
+  View,
+  ActivityIndicator,
+} from 'react-native';
+import ArticleCard from '../components/ArticleCard';
 
 const TopStories = ({ navigation }) => {
   const [articles, setArticles] = useState([]);
-  const [loading, isLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const getNews = async () => {
-    const response = await fetch(
-      `https://newsapi.org/v2/top-headlines?country=gb&apiKey=cdb1b0f5c10b498ab9bff1ed7e1b63bb`
-    );
-    const jsonData = await response.json();
-    console.log(jsonData.articles);
-
-    setArticles(jsonData.articles);
+    try {
+      const response = await fetch(
+        `https://newsapi.org/v2/top-headlines?country=gb&apiKey=cdb1b0f5c10b498ab9bff1ed7e1b63bb`
+      );
+      const jsonData = await response.json();
+      setArticles(jsonData.articles);
+      setLoading(false);
+    } catch (err) {
+      // console.log(err);
+    }
   };
 
   useEffect(() => {
     getNews();
   }, []);
 
+  if (loading)
+    return (
+      <ActivityIndicator size="large" color="red" style={{ marginTop: 250 }} />
+    );
+
   return (
-    <ScrollView>
-      <View
-        style={{
-          borderTopWidth: 10,
-          borderBottomWidth: 10,
-          borderColor: 'lightgray',
-        }}
-      >
-        <Tile
-          imageContainerStyle={{ height: 75 }}
-          imageSrc={require('../assets/Global_News.svg.png')}
-          title="This is the Headline"
-          contentContainerStyle={{ height: 70, marginTop: 10 }}
-        >
-          <View
-            style={{
-              flex: 1,
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-            }}
-          >
-            <Text>2h Ago</Text>
-            <Text>BBC News</Text>
-          </View>
-        </Tile>
-      </View>
-    </ScrollView>
+    <View style={styles.container}>
+      <View style={styles.row}></View>
+      <FlatList
+        data={articles}
+        renderItem={ArticleCard}
+        keyExtractor={(item) => item.title}
+      />
+    </View>
   );
 };
-
+const styles = StyleSheet.create({
+  containerFlex: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  container: {
+    flex: 1,
+    marginTop: 10,
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    justifyContent: 'center',
+  },
+  header: {
+    height: 30,
+    width: '100%',
+    backgroundColor: 'pink',
+  },
+  row: {
+    flexDirection: 'row',
+  },
+  label: {
+    fontSize: 16,
+    color: 'black',
+    marginRight: 10,
+    fontWeight: 'bold',
+  },
+  info: {
+    fontSize: 16,
+    color: 'grey',
+  },
+});
 export default TopStories;

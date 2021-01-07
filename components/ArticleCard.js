@@ -1,19 +1,31 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { Image, Tile } from 'react-native-elements';
+import { View, Text } from 'react-native';
+import { Tile } from 'react-native-elements';
+import moment from 'moment';
 
-const ArticleCard = () => {
-  return <View></View>;
+const ArticleCard = ({ item }) => {
+  return (
+    <View>
+      <Tile
+        imageContainerStyle={{ height: 75 }}
+        imageSrc={{ uri: item.urlToImage }}
+        title={item.title}
+        titleStyle={{ fontSize: 14, paddingTop: 1 }}
+        contentContainerStyle={{ height: 70, marginTop: 10 }}
+      >
+        <View
+          style={{
+            flex: 1,
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+          }}
+        >
+          <Text>{moment(item.publishedAt).fromNow()}</Text>
+          <Text style={{ paddingBottom: 1 }}>{item.source.name}</Text>
+        </View>
+      </Tile>
+    </View>
+  );
 };
-
-const styles = StyleSheet.create({
-  logo: {
-    width: 160,
-    height: 90,
-    alignSelf: 'center',
-    marginTop: 50,
-    marginBottom: 20,
-  },
-});
 
 export default ArticleCard;
