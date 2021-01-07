@@ -1,12 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import { ScrollView, Text, View } from 'react-native';
 import { Tile } from 'react-native-elements';
-import axios from 'axios';
 
 const TopStories = ({ navigation }) => {
   const [articles, setArticles] = useState([]);
+  const [loading, isLoading] = useState(false);
 
-  useEffect(() => {}, []);
+  const getNews = async () => {
+    const response = await fetch(
+      `https://newsapi.org/v2/top-headlines?country=gb&apiKey=cdb1b0f5c10b498ab9bff1ed7e1b63bb`
+    );
+    const jsonData = await response.json();
+    console.log(jsonData.articles);
+
+    setArticles(jsonData.articles);
+  };
+
+  useEffect(() => {
+    getNews();
+  }, []);
 
   return (
     <ScrollView>
