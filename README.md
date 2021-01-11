@@ -1,6 +1,6 @@
 # **Mates Rates - Mobile App** | [Try Me on iOS](https://expo.io/@disley01/projects/TheNews)
 
-<img src="./assets/demo.gif" alt="demo" width="120" height="350">
+<img src="./assets/demo.gif" alt="demo" width="200" height="500">
 
 The News collates the latest news into one app built with React Native and Expo. The information is gathered from News API.
 
