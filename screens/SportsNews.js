@@ -23,7 +23,7 @@ const SportsNews = () => {
       setLoading(false);
       setRefreshing(false);
     } catch (err) {
-      console.error(err);
+      throw err;
     }
   };
 
@@ -34,7 +34,7 @@ const SportsNews = () => {
 
   useEffect(() => {
     getNews();
-  });
+  }, []);
 
   if (loading)
     return (

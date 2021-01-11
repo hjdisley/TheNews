@@ -23,7 +23,7 @@ const TopStories = () => {
       setLoading(false);
       setRefreshing(false);
     } catch (err) {
-      console.error(err);
+      throw err;
     }
   };
 
