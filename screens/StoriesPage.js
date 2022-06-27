@@ -1,14 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   FlatList,
-  StyleSheet,
   RefreshControl,
   View,
   ActivityIndicator,
-} from 'react-native';
-import ArticleCard from '../components/ArticleCard';
+} from "react-native";
+import ArticleCard from "../components/ArticleCard";
 
-const TopStories = () => {
+const StoriesPage = ({ topic, navigation }) => {
+  console.log(navigation);
+
   const [articles, setArticles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -16,7 +17,9 @@ const TopStories = () => {
   const getNews = async () => {
     try {
       const response = await fetch(
-        `https://newsapi.org/v2/top-headlines?country=gb&apiKey=cdb1b0f5c10b498ab9bff1ed7e1b63bb`
+        topic === "Top Stories"
+          ? `https://newsapi.org/v2/top-headlines?country=gb&apiKey=cdb1b0f5c10b498ab9bff1ed7e1b63bb`
+          : `https://newsapi.org/v2/top-headlines?country=gb&category=${topic}&apiKey=cdb1b0f5c10b498ab9bff1ed7e1b63bb`
       );
       const jsonData = await response.json();
       setArticles(jsonData.articles);
@@ -43,7 +46,7 @@ const TopStories = () => {
 
   return (
     <View>
-      <View style={{ flexDirection: 'row' }}></View>
+      <View style={{ flexDirection: "row" }}></View>
       <FlatList
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />
@@ -56,4 +59,4 @@ const TopStories = () => {
   );
 };
 
-export default TopStories;
+export default StoriesPage;
